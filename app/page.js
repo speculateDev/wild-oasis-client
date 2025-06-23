@@ -4,12 +4,6 @@ import bg from "@/public/bg.png";
 
 export default function Home() {
   return (
-    <div>
-      <Navigation />
-      <h1 className="">Hello Next!</h1>
-    </div>
-  );
-  return (
     <main className="mt-24">
       <Image
         fill
