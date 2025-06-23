@@ -22,13 +22,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${josefin.className} bg-primary-950 text-primary-100`}>
-        <header>
-          <Logo />
-          <Navigation />
-        </header>
-        <main>{children}</main>
-        <footer>Copyright by the Wild Oasis</footer>
+      <body
+        className={`${josefin.className} bg-primary-950 text-primary-100 flex flex-col min-h-screen antialiased relative`}
+      >
+        <Header />
+
+        <div className="flex-1 py-12 px-8">
+          <main className="max-w-7xl mx-auto">{children}</main>
+        </div>
       </body>
     </html>
   );
