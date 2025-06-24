@@ -1,11 +1,13 @@
 import Filter from "../_components/Filter";
 import CabinList from "../_components/CabinList";
+import { Suspense } from "react";
+import Spinner from "../_components/Spinner";
 
 export const metadata = {
   title: "Cabins",
 };
 
-async function page({ searchParams }) {
+function page({ searchParams }) {
   const filter = searchParams?.capacity ?? "all";
 
   return (
@@ -26,7 +28,9 @@ async function page({ searchParams }) {
         <Filter />
       </div>
 
-      <CabinList filter={filter} />
+      <Suspense fallback={<Spinner />}>
+        <CabinList filter={filter} />
+      </Suspense>
     </div>
   );
 }
