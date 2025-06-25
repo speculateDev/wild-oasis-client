@@ -48,8 +48,8 @@ function page() {
         </div>
       </div>
 
-      <div className="flex gap-24 flex-col md:flex-row-reverse">
-        <div className="md:w-[30%] relative aspect-square order-3">
+      <div className="flex gap-12 md:gap-24 flex-col md:flex-row-reverse">
+        <div className="md:w-[45%] lg:w-[30%] relative aspect-square order-3">
           <Image
             src="/about-2.jpg"
             fill
@@ -58,7 +58,7 @@ function page() {
           />
         </div>
 
-        <div className="md:w-[70%] ">
+        <div className="md:w-[55%] lg:w-[70%]">
           <h1 className="text-3xl md:text-4xl text-accent-400 font-medium mb-10">
             Managed by our family since 1962
           </h1>

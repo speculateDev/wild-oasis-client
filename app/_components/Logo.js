@@ -35,7 +35,7 @@ function Logo() {
         src={logo}
         alt="The Wild Oasis logo"
       />
-      <span className="text-xl font-semibold text-primary-100 hidden sm:inline">
+      <span className="text-xl font-semibold text-primary-100 hidden md:inline">
         The Wild Oasis
       </span>
     </Link>
