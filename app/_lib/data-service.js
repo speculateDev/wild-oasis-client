@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { supabase } from "./supabase";
 import { eachDayOfInterval } from "date-fns";
 
@@ -5,7 +6,7 @@ import { eachDayOfInterval } from "date-fns";
 ///// GET
 
 export async function getCabin(id) {
-  const { data, error } = supabase
+  const { data, error } = await supabase
     .from("cabins")
     .select("*")
     .eq("id", id)
@@ -15,6 +16,7 @@ export async function getCabin(id) {
 
   if (error) {
     console.error(error);
+    notFound();
   }
 
   return data;
@@ -61,7 +63,7 @@ export async function getGuest(email) {
 }
 
 export async function getBooking(id) {
-  const { data, error } = supabase
+  const { data, error } = await supabase
     .from("bookings")
     .select("*")
     .eq("id", id)
@@ -75,7 +77,7 @@ export async function getBooking(id) {
 }
 
 export async function getBookings(guestId) {
-  const { data, error } = supabase
+  const { data, error } = await supabase
     .from("bookings")
     .select(
       "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)"
@@ -107,18 +109,20 @@ export async function getBookedDatesByCabinId(cabinId) {
     throw new Error("Bookings could not be loaded");
   }
 
-  const bookedDates = data.map((booking) => {
-    return eachDayOfInterval({
-      start: new Date(booking.startDate),
-      end: new Date(booking.endDate),
-    });
-  });
+  const bookedDates = data
+    .map((booking) => {
+      return eachDayOfInterval({
+        start: new Date(booking.startDate),
+        end: new Date(booking.endDate),
+      });
+    })
+    .flat();
 
   return bookedDates;
 }
 
 export async function getSettings() {
-  const { data, error } = supabase.from("settings").select("*").single();
+  const { data, error } = await supabase.from("Settings").select("*").single();
 
   // await new Promise((resolve, reject) => setTimeout(resolve, 6000));
 
