@@ -9,6 +9,7 @@ import {
   isSameDay,
   isWithinInterval,
 } from "date-fns";
+import { useReservation } from "./ReservationContext";
 
 function isAlreadyBooked(range, dateArr) {
   return (
@@ -24,23 +25,24 @@ function isAlreadyBooked(range, dateArr) {
 }
 
 function DateSelector({ cabin, bookedDates, settings }) {
-  const [range, setRange] = useState({ from: undefined, to: undefined });
+  const { range, setRange, resetRange } = useReservation();
 
   const [numCols, setNumCols] = useState(2);
 
   const { discount, regularPrice } = cabin;
-  const { minimumBookingLength, maxBookingLength } = settings;
+  const { minimumBookingLength, maxBookinglength } = settings;
 
   const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
   const numNights = differenceInDays(displayRange.to, displayRange.from);
 
   const cabinPrice = numNights * (regularPrice - discount);
 
-  function resetRange() {
-    setRange({
-      from: undefined,
-      to: undefined,
-    });
+  function handleSetterRange(newRange) {
+    if (!newRange || !newRange.from) {
+      setRange({ from: undefined, to: undefined });
+    } else {
+      setRange(newRange);
+    }
   }
 
   useEffect(() => {
@@ -72,9 +74,9 @@ function DateSelector({ cabin, bookedDates, settings }) {
         mode="range"
         numberOfMonths={numCols}
         selected={displayRange}
-        onSelect={setRange}
+        onSelect={handleSetterRange}
         min={minimumBookingLength + 1}
-        max={maxBookingLength}
+        max={maxBookinglength}
         startMonth={new Date()}
         hidden={{ before: new Date() }}
         endMonth={new Date(new Date().getFullYear() + 5, 0)}
