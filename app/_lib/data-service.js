@@ -52,16 +52,6 @@ export async function getCabinPrice(id) {
   return data;
 }
 
-export async function getGuest(email) {
-  const { data, error } = supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
-
-  return data;
-}
-
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")
@@ -155,6 +145,16 @@ export async function createGuest(newGuest) {
     console.error(error);
     throw new Error("Guest could not be created");
   }
+
+  return data;
+}
+
+export async function getGuest(email) {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("email", email)
+    .single();
 
   return data;
 }
