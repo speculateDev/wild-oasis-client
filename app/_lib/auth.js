@@ -34,7 +34,27 @@ export const authConfig = {
   ],
 
   callbacks: {
-    // async jwt({ token }) {},
+    async session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+
+      if (session.user) {
+        session.user.name = token.name;
+      }
+
+      return session;
+    },
+
+    async jwt({ token }) {
+      const existingUser = await getGuest(token.email);
+      token.name = existingUser.fullName;
+      return token;
+    },
+  },
+
+  pages: {
+    signIn: "/login",
   },
 };
 
