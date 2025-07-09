@@ -1,6 +1,7 @@
 import Cabin from "@/app/_components/Cabin";
 import Reservation from "@/app/_components/Reservation";
 import Spinner from "@/app/_components/Spinner";
+import { auth } from "@/app/_lib/auth";
 import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { Suspense } from "react";
 
@@ -23,6 +24,7 @@ export async function generateStaticParams() {
 
 async function page({ params }) {
   const cabin = await getCabin(params.cabinId);
+  const session = await auth();
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
@@ -34,7 +36,7 @@ async function page({ params }) {
         </h2>
 
         <Suspense fallback={<Spinner />}>
-          <Reservation cabin={cabin} />
+          <Reservation cabin={cabin} user={session?.user} />
         </Suspense>
       </div>
     </div>

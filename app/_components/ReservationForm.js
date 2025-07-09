@@ -5,7 +5,7 @@ import SubmitButton from "./SubmitButton";
 // import { useReservation } from "./ReservationContext";
 // import { createBooking } from "../_lib/actions";
 
-function ReservationForm({ cabin }) {
+function ReservationForm({ cabin, user }) {
   //   const { range, resetRange } = useReservation();
   const { maxCapacity, regularPrice, discount, id } = cabin;
 
@@ -35,10 +35,10 @@ function ReservationForm({ cabin }) {
             // Important to display google profile images
             referrerPolicy="no-referrer"
             className="h-8 rounded-full"
-            // src={user.image}
-            // alt={user.name}
+            src={user.image}
+            alt={user.name}
           />
-          <p>{"user.name"}</p>
+          <p>{user.name}</p>
         </div>
       </div>
 

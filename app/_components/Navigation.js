@@ -1,19 +1,15 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { auth } from "@/app/_lib/auth";
 
-function Navigation() {
-  const pathname = usePathname();
+async function Navigation() {
+  const session = await auth();
 
   return (
     <nav className="z-10 text-sm sm:text-xl">
       <ul className="flex gap-4 sm:gap-16 items-center">
         <li>
           <Link
-            className={`hover:text-accent-400 transition-colors ${
-              pathname.includes("/cabins") ? "text-accent-400" : ""
-            }`}
+            className="hover:text-accent-400 transition-colors"
             href="/cabins"
           >
             Cabins
@@ -21,23 +17,35 @@ function Navigation() {
         </li>
         <li>
           <Link
-            className={`hover:text-accent-400 transition-colors ${
-              pathname === "/about" ? "text-accent-400" : ""
-            }`}
+            className="hover:text-accent-400 transition-colors"
             href="/about"
           >
             About
           </Link>
         </li>
         <li>
-          <Link
-            className={`hover:text-accent-400 transition-colors ${
-              pathname === "/account" ? "text-accent-400" : ""
-            }`}
-            href="/account"
-          >
-            Guest area
-          </Link>
+          {session?.user?.name ? (
+            <Link
+              className="hover:text-accent-400 transition-colors flex items-center gap-4"
+              href="/account"
+            >
+              <img
+                className="h-8 rounded-full"
+                src={session.user.image || "/default-profile.jpg"}
+                alt="User profile"
+                referrerPolicy="no-referrer"
+              />
+              <span>Guest area</span>
+            </Link>
+          ) : (
+            <Link
+              className="hover:text-accent-400 transition-colors"
+              href="/account"
+            >
+              {" "}
+              <span>Guest area</span>
+            </Link>
+          )}
         </li>
       </ul>
     </nav>
