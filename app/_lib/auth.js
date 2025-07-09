@@ -1,7 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-// import { getGuest } from "./data-service";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+
+import { getGuest } from "./data-service";
 
 export const authConfig = {
   providers: [
@@ -13,9 +16,26 @@ export const authConfig = {
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
+
+    Credentials({
+      async authorize(credentials) {
+        const { email, password } = credentials;
+
+        const user = await getGuest(email);
+
+        if (!user || !user.password) return null;
+
+        const isMatched = await bcrypt.compare(password, user.password);
+        if (!isMatched) throw new Error("Wrong password");
+
+        return user;
+      },
+    }),
   ],
 
-  callbacks: {},
+  callbacks: {
+    // async jwt({ token }) {},
+  },
 };
 
 export const {
