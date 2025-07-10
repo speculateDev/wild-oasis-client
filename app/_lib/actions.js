@@ -8,14 +8,17 @@ export async function updateProfile(formData) {
     const session = await auth();
     if (!session) throw new Error("You must be logged in");
 
-    // Log all form data
+    const img = formData.get("profile");
+
     const nationalID = formData.get("nationalID");
+
+    // Extract the nationality and flag from the combo
     const x = formData.get("nationality");
     const [nationality, countryFlag] = x.split("%");
 
     const nationalIDRegex = /^[a-zA-Z0-9]{6,12}$/;
 
-    if (!nationalIDRegex.test(nationalID)) {
+    if (nationalID && !nationalIDRegex.test(nationalID)) {
       throw new Error("Please provide a valid national ID");
     }
 
@@ -24,6 +27,10 @@ export async function updateProfile(formData) {
       countryFlag,
       nationality,
     };
+
+    if (img) {
+      updateData.image = img;
+    }
 
     const { data, error } = await supabase
       .from("guests")
