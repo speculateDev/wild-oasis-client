@@ -51,12 +51,9 @@ export const authConfig = {
       return true;
     },
     async session({ session, token }) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
-
       if (session.user) {
         session.user.name = token.name;
+        session.user.id = token.userId;
       }
 
       return session;
@@ -66,6 +63,7 @@ export const authConfig = {
       const existingUser = await getGuest(token.email);
       if (existingUser) {
         token.name = existingUser.fullName;
+        token.userId = existingUser.id;
       }
       return token;
     },
