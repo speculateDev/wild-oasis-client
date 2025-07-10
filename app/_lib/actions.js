@@ -34,6 +34,7 @@ export async function updateProfile(formData) {
       throw new Error("Guest could not be updated");
     }
 
+    revalidatePath("/account/profile");
     return { success: true };
   } catch (error) {
     return { error: error.message };
