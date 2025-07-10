@@ -58,6 +58,7 @@ export const authConfig = {
       if (session.user) {
         session.user.name = token.name;
         session.user.id = token.userId;
+        session.user.image = token.image;
       }
 
       return session;
@@ -68,7 +69,9 @@ export const authConfig = {
       if (existingUser) {
         token.name = existingUser.fullName;
         token.userId = existingUser.id;
+        token.image = existingUser.image;
       }
+
       return token;
     },
   },
