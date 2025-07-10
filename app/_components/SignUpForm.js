@@ -33,11 +33,14 @@ function SignUpForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-
         throw new Error(errorData.message || "Failed to create a guest");
       }
 
-      await signInWithCredentials({ email, password });
+      const result = await signInWithCredentials({ email, password });
+
+      if (result?.ok) {
+        router.push("/");
+      }
     } catch (error) {
       setError(error.message);
     }

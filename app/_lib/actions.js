@@ -47,7 +47,6 @@ export async function signInWithCredentials(credentials) {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/",
       redirect: false,
     });
 
