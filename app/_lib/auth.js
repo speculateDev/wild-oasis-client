@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
-import { getGuest } from "./data-service";
+import { createGuest, getGuest } from "./data-service";
 
 export const authConfig = {
   providers: [
@@ -34,6 +34,22 @@ export const authConfig = {
   ],
 
   callbacks: {
+    async signIn({ user, account }) {
+      // Don't create an account if login is from crendetials
+      if (account.type === "credentials") return true;
+
+      // if user already exists don't create
+      const existingUser = await getGuest(user.email);
+      if (existingUser) return true;
+
+      createGuest({
+        fullName: user.name,
+        email: user.email,
+        ...(user.image && { image: user.image }),
+      });
+
+      return true;
+    },
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
