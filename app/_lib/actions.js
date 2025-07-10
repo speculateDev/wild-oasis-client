@@ -8,12 +8,13 @@ export async function signInWithCredentials(credentials) {
       email,
       password,
       redirectTo: "/",
+      redirect: false,
     });
+
+    return { ok: true };
   } catch (error) {
     if (error.type === "CredentialsSignin") {
-      throw new Error(
-        "Invalid credentials. Please check your email and password."
-      );
+      throw new Error("Invalid credentials");
     } else {
       throw new Error("An unexpected error occurred. Please try again later.");
     }

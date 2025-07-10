@@ -1,15 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import SubmitButton from "./SubmitButton";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+
+import { signInWithCredentials } from "@/app/_lib/actions";
+import SubmitButton from "./SubmitButton";
 
 function LoginForm() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
+  const [error, setError] = useState(null);
 
   const handleReset = () => {
     setEmail("");
@@ -20,10 +24,9 @@ function LoginForm() {
     if (!email || !password) return;
 
     try {
-      const result = await signIn("credentials", {
+      const result = await signInWithCredentials({
         email,
         password,
-        redirect: false,
       });
 
       if (result?.error) {
@@ -36,7 +39,7 @@ function LoginForm() {
         router.push("/");
       }
     } catch (error) {
-      return { error: "Something went wrong!" };
+      setError(error.message);
     }
   };
 
@@ -45,6 +48,17 @@ function LoginForm() {
       action={handleSignIn}
       className="bg-primary-900 py-4 sm:py-6 px-6 sm:px-10 text-lg flex gap-6 flex-col min-w-[450px]"
     >
+      {error && (
+        <div className="text-red-500 text-center mb-4 font-bold tracking-wider">
+          {
+            <div className="flex items-center justify-center gap-2">
+              <ExclamationCircleIcon className="size-10" />
+              <span className="text-lg">{error}</span>
+            </div>
+          }
+        </div>
+      )}
+
       <div className="space-y-2">
         <label className="block">Email</label>
         <input
