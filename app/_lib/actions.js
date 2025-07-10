@@ -62,7 +62,7 @@ export async function signInWithCredentials(credentials) {
 }
 
 export async function signInAction(provider) {
-  await signIn(provider);
+  await signIn(provider, { redirectTo: "/" });
 }
 
 export async function signOutAction() {

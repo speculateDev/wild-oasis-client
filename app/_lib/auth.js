@@ -34,6 +34,10 @@ export const authConfig = {
   ],
 
   callbacks: {
+    authorized({ auth, request }) {
+      return !!auth?.user;
+    },
+
     async signIn({ user, account }) {
       // Don't create an account if login is from crendetials
       if (account.type === "credentials") return true;
