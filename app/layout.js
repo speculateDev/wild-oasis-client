@@ -3,6 +3,8 @@ import "@/app/_styles/globals.css";
 
 import { Josefin_Sans } from "next/font/google";
 import { ReservationProvider } from "./_components/ReservationContext";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/app/_lib/auth";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -19,19 +21,22 @@ export const metadata = {
     "Luxurious cabin hotel, located in the heart of the Italian Dolomites, surrounded by beautiful mountains and dark forests",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${josefin.className} bg-primary-950 text-primary-100 flex flex-col min-h-screen antialiased relative`}
       >
-        <Header />
-
-        <div className="flex-1 py-12 sm:px-8 px-4 grid">
-          <main className="max-w-7xl mx-auto w-full">
-            <ReservationProvider>{children}</ReservationProvider>
-          </main>
-        </div>
+        <SessionProvider session={session}>
+          <Header />
+          <div className="flex-1 py-12 sm:px-8 px-4 grid">
+            <main className="max-w-7xl mx-auto w-full">
+              <ReservationProvider>{children}</ReservationProvider>
+            </main>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );
