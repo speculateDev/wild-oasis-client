@@ -1,9 +1,13 @@
-import { getCountries } from "../_lib/data-service";
-
 async function SelectCountry({ defaultCountry, name, id, className }) {
-  const countries = await getCountries();
+  const baseUrl = process.env.NEXTAUTH_URL;
+  const res = await fetch(baseUrl + "/api/countries");
+  const data = await res.json();
+  const { countries } = data;
+
   const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? "";
+    countries.find(
+      (country) => country.name.toLowerCase() === defaultCountry.toLowerCase()
+    )?.flag ?? "";
 
   return (
     <select
@@ -14,7 +18,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
     >
       <option value="">Select a country...</option>
       {countries.map((c) => (
-        <option value={`${c.name}%${c.flag}`} key={c.name} className="">
+        <option value={`${c.name}%${c.flag}`} key={c.name}>
           {c.name}
         </option>
       ))}

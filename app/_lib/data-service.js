@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 import { eachDayOfInterval } from "date-fns";
 
 //////////////
-///// GET
+///// Cabin
 
 export async function getCabin(id) {
   const { data, error } = await supabase
@@ -51,6 +51,10 @@ export async function getCabinPrice(id) {
 
   return data;
 }
+
+/////////////////////////
+/////////////////////////
+////// Booking
 
 export async function getBooking(id) {
   const { data, error } = await supabase
@@ -111,32 +115,9 @@ export async function getBookedDatesByCabinId(cabinId) {
   return bookedDates;
 }
 
-export async function getSettings() {
-  const { data, error } = await supabase.from("Settings").select("*").single();
-
-  // await new Promise((resolve, reject) => setTimeout(resolve, 6000));
-
-  if (error) {
-    console.error();
-    throw new Error("Settings could not be loaded");
-  }
-
-  return data;
-}
-
-export async function getCountries() {
-  try {
-    const res = await fetch(
-      "https://restcountries.com/v2/all?fields=name,flag"
-    );
-
-    const countries = res.json();
-    return countries;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Could not fetch countries");
-  }
-}
+//////////////////////////////////////////////
+//////////////////////////////////////////////
+///// Guests
 
 export async function createGuest(newGuest) {
   const { data, error } = await supabase.from("guests").insert([newGuest]);
@@ -157,4 +138,37 @@ export async function getGuest(email) {
     .single();
 
   return data;
+}
+
+//////////////////////////////////////////////
+//////////////////////////////////////////////
+///// Utils
+
+export async function getSettings() {
+  const { data, error } = await supabase.from("Settings").select("*").single();
+
+  // await new Promise((resolve, reject) => setTimeout(resolve, 6000));
+
+  if (error) {
+    console.error();
+    throw new Error("Settings could not be loaded");
+  }
+
+  return data;
+}
+
+export async function getCountries() {
+  try {
+    const data = require("@/db.json");
+
+    // const res = await fetch(
+    //   "https://restcountries.com/v2/all?fields=name,flag"
+    // );
+    // const countries = res.json();
+
+    return data.countries;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Could not fetch countries");
+  }
 }
