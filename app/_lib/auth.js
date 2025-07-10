@@ -64,7 +64,9 @@ export const authConfig = {
 
     async jwt({ token }) {
       const existingUser = await getGuest(token.email);
-      token.name = existingUser.fullName;
+      if (existingUser) {
+        token.name = existingUser.fullName;
+      }
       return token;
     },
   },
