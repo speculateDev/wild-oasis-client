@@ -1,32 +1,32 @@
 "use client";
 
 import { differenceInDays } from "date-fns";
+import { useReservation } from "./ReservationContext";
 import SubmitButton from "./SubmitButton";
-// import { useReservation } from "./ReservationContext";
-// import { createBooking } from "../_lib/actions";
+import { createBooking } from "../_lib/actions";
 
 function ReservationForm({ cabin, user }) {
-  //   const { range, resetRange } = useReservation();
+  const { range, resetRange } = useReservation();
   const { maxCapacity, regularPrice, discount, id } = cabin;
 
-  // const startDate = range.from;
-  // const endDate = range.to;
+  const startDate = range.from;
+  const endDate = range.to;
 
-  // const numNights = differenceInDays(endDate, startDate);
-  // const cabinPrice = numNights * (regularPrice - discount);
+  const numNights = differenceInDays(endDate, startDate);
+  const cabinPrice = numNights * (regularPrice - discount);
 
-  // const bookingData = {
-  //   cabinId: id,
-  //   startDate,
-  //   endDate,
-  //   numNights,
-  //   cabinPrice,
-  // };
+  const bookingData = {
+    cabinId: id,
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+  };
 
-  // const createBookingWithData = createBooking.bind(null, bookingData);
+  const createBookingWithData = createBooking.bind(null, bookingData);
 
   return (
-    <div className="scale-[1.01]">
+    <div className="scale-[1.01] bg-primary-900">
       <div className="bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center">
         <p>Logged in as</p>
 
@@ -43,11 +43,10 @@ function ReservationForm({ cabin, user }) {
       </div>
 
       <form
-        // action={createBookingWithData}
-        // action={async (formData) => {
-        //   await createBookingWithData(formData);
-        //   resetRange();
-        // }}
+        action={async (formData) => {
+          await createBookingWithData(formData);
+          resetRange();
+        }}
         className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
       >
         <div className="space-y-2">
@@ -82,14 +81,13 @@ function ReservationForm({ cabin, user }) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          {/* {!(startDate && endDate) ? (
+          {!startDate || !endDate ? (
             <p className="text-primary-300 text-base">
               Start by selecting dates
             </p>
           ) : (
             <SubmitButton pendingLabel="Reserving...">Reserve now</SubmitButton>
-          )} */}
-          <SubmitButton pendingLabel="Reserving...">Reserve now</SubmitButton>
+          )}
         </div>
       </form>
     </div>
