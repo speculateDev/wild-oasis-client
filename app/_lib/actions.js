@@ -2,6 +2,8 @@
 import { auth, signIn, signOut } from "@/app/_lib/auth";
 import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export async function updateProfile(formData) {
   try {
@@ -48,6 +50,55 @@ export async function updateProfile(formData) {
   }
 }
 
+export async function createBooking(bookingData, formData) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const { cabinId, startDate, endDate, numNights, cabinPrice } = bookingData;
+
+  if (!bookingData.startDate || !bookingData.endDate || isNaN(numNights)) {
+    throw new Error("Invalid date range");
+  }
+
+  if (isNaN(cabinPrice)) {
+    throw new Error("Invalid cabin price");
+  }
+
+  const newBooking = {
+    ...bookingData,
+    guestId: session.user.id,
+    numGuests: formData.get("numGuests"),
+    observations: formData.get("observations"),
+    totalPrice: cabinPrice,
+    startDate,
+    endDate,
+    extrasPrice: 0,
+    isPaid: false,
+    hasBreakfast: false,
+    status: "unconfirmed",
+  };
+
+  const { error } = await supabase.from("bookings").insert([newBooking]);
+
+  if (error) {
+    console.log(error);
+    throw new Error("Booking could not be created");
+  }
+
+  // Generate token (to only )
+  const token = Math.random().toString(36).substring(2, 15);
+  cookies().set("thankyou", token, { maxAge: 90 });
+
+  revalidatePath(`/cabins/${cabinId}`);
+  redirect(`/cabins/thankyou?token=${token}`);
+}
+
+export async function deleteBooking(bookingId) {}
+export async function updateBooking() {}
+
+///////////////////////
+///////////////////////
+//////// Auth
 export async function signInWithCredentials(credentials) {
   const { email, password } = credentials;
   try {
