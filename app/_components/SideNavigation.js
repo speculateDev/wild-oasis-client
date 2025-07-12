@@ -31,7 +31,7 @@ function SideNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-r border-primary-900">
+    <nav className="border-r border-primary-900 ">
       <ul className="flex flex-col gap-2 h-full text-lg">
         {navLinks.map((link) => (
           <li key={link.name}>
@@ -42,7 +42,7 @@ function SideNavigation() {
               href={link.href}
             >
               {link.icon}
-              <span className="hidden md:inline">{link.name}</span>
+              <span className="hidden lg:inline">{link.name}</span>
             </Link>
           </li>
         ))}

@@ -16,7 +16,7 @@ function DeleteReservation({ bookingId, onDelete }) {
     <button
       disabled={isPending}
       onClick={handleDelete}
-      className="flex items-center group gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors"
+      className="flex items-center group gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors justify-center sm:justify-normal"
     >
       {isPending ? (
         <SpinnerMini className="size-5" />

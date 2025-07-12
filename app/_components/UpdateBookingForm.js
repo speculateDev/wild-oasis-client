@@ -1,5 +1,4 @@
 import { updateBooking } from "../_lib/actions";
-import { getCabin } from "../_lib/data-service";
 import SubmitButton from "./SubmitButton";
 
 async function UpdateBookingForm({ booking, maxCapacity }) {
@@ -38,7 +37,7 @@ async function UpdateBookingForm({ booking, maxCapacity }) {
         />
       </div>
 
-      <div class="flex justify-end">
+      <div className="flex justify-end">
         <SubmitButton pendingLabel="Updating..." className="text-lg">
           Update Reservation
         </SubmitButton>
