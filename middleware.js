@@ -14,12 +14,14 @@ export default auth((req) => {
   );
   const isAuthRoute = authRoute.includes(nextUrl.pathname);
 
+  const baseUrl = process.env.NEXTAUTH_URL || nextUrl.origin;
+
   if (!isLoggedIn && isProtected) {
-    return NextResponse.redirect(new URL(`/login`, nextUrl.origin));
+    return NextResponse.redirect(new URL(`/login`, baseUrl));
   }
 
   if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL(`/`, nextUrl.origin));
+    return NextResponse.redirect(new URL(`/`, baseUrl));
   }
 
   return null;
