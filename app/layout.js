@@ -6,7 +6,7 @@ import { ReservationProvider } from "./_components/ReservationContext";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/app/_lib/auth";
 
-const josefin = Josefin_Sans({
+const josephin = Josefin_Sans({
   subsets: ["latin"],
   display: "swap",
 });
@@ -27,7 +27,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${josefin.className} bg-primary-950 text-primary-100 flex flex-col min-h-screen antialiased relative`}
+        className={`${josephin.className} bg-primary-950 text-primary-100 flex flex-col min-h-screen antialiased relative`}
       >
         <SessionProvider session={session}>
           <Header />
