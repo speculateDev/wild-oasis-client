@@ -5,6 +5,7 @@ import ReservationCard from "./ReservationCard";
 
 function ReservationsList({ bookings }) {
   function handleDelete(bookingId) {
+    // optimisticDelete(bookingId);
     deleteBooking(bookingId);
   }
 
