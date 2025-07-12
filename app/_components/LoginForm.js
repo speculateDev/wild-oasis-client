@@ -30,16 +30,16 @@ function LoginForm() {
       });
 
       if (result?.error) {
-        alert("Wrong crendentials");
+        setError(result.error);
         handleReset();
-        return { error: "Invalid credentials!" };
+        return;
       }
 
       if (result?.ok) {
         router.push("/");
       }
     } catch (error) {
-      setError(error.message);
+      setError("An unexpected error occurred. Please try again later.");
     }
   };
 
