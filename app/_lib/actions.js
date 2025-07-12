@@ -4,6 +4,7 @@ import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { getBookings } from "./data-service";
 
 export async function updateProfile(formData) {
   try {
@@ -93,7 +94,29 @@ export async function createBooking(bookingData, formData) {
   redirect(`/cabins/thankyou?token=${token}`);
 }
 
-export async function deleteBooking(bookingId) {}
+export async function deleteBooking(bookingId) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  // Check if the booking is relevant to the signed in user
+  const guestBookings = await getBookings(session?.user?.id);
+  const guestBookingsIds = guestBookings.map((b) => b.id);
+
+  if (!guestBookingsIds.includes(bookingId))
+    throw new Error("You are not allowed to delete this booking");
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId);
+
+  if (error) {
+    throw new Error("Booking could not be deleted");
+  }
+
+  revalidatePath("/account/reservation");
+}
+
 export async function updateBooking() {}
 
 ///////////////////////
