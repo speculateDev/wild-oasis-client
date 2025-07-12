@@ -69,7 +69,7 @@ export async function createBooking(bookingData, formData) {
     ...bookingData,
     guestId: session.user.id,
     numGuests: formData.get("numGuests"),
-    observations: formData.get("observations"),
+    observations: formData.get("observations").slice(0, 1000),
     totalPrice: cabinPrice,
     startDate,
     endDate,
@@ -117,7 +117,38 @@ export async function deleteBooking(bookingId) {
   revalidatePath("/account/reservation");
 }
 
-export async function updateBooking() {}
+export async function updateBooking(bookingId, formData) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  // Only allow personal bookings mutation
+  const guestBooking = await getBookings(session.user.id);
+  const bookingsIds = guestBooking.map((b) => b.id);
+
+  if (!bookingsIds.includes(bookingId)) {
+    throw new Error("Your are not allowed to update this booking");
+  }
+
+  const observations = formData.get("observations").slice(0, 1000);
+  const numGuests = Number(formData.get("numGuests"));
+
+  const updateData = {
+    observations,
+    numGuests,
+  };
+
+  const { error } = await supabase
+    .from("bookings")
+    .update(updateData)
+    .eq("id", bookingId);
+
+  if (error) {
+    throw new Error("Failed to update booking");
+  }
+
+  revalidatePath(`/account/reservations/edit/${bookingId}`);
+  redirect("/account/reservations");
+}
 
 ///////////////////////
 ///////////////////////
