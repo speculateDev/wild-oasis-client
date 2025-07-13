@@ -38,7 +38,7 @@ function DateSelector({ cabin, bookedDates, settings }) {
   const cabinPrice = numNights * (regularPrice - discount);
 
   function handleSetterRange(newRange) {
-    if (!newRange || !newRange.from) {
+    if (!newRange || !newRange.from || isAlreadyBooked(newRange, bookedDates)) {
       setRange({ from: undefined, to: undefined });
     } else {
       setRange(newRange);
