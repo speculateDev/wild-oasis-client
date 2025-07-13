@@ -49,7 +49,7 @@ function SignUpForm() {
   return (
     <>
       <h3 className="text-center text-3xl font-semibold mb-4 -mt-6">
-        Sign in to access your guest area
+        Sign up to reserve cabins
       </h3>
 
       <form

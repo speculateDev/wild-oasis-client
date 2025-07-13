@@ -10,7 +10,7 @@ function Socials() {
           height="24"
           width="24"
         />
-        <span>Continue with Google</span>
+        <span className="hidden sm:inline">Continue with Google</span>
       </SignInButton>
 
       <SignInButton provider={"github"}>
@@ -20,7 +20,7 @@ function Socials() {
           height="24"
           width="24"
         />
-        <span>Continue with Github</span>
+        <span className="hidden sm:inline">Continue with Github</span>
       </SignInButton>
     </div>
   );

@@ -78,9 +78,9 @@ function ReservationCard({ booking, onDelete }) {
 
       {/* Edit and delete */}
       {!isPast(startDate) && (
-        <div className="flex  sm:flex-col border-l border-primary-800 sm:w-[100px]">
+        <div className="flex sm:flex-col sm:border-l border-primary-800 sm:w-[100px]">
           <Link
-            className="flex items-center group gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900 justify-center sm:justify-normal py-5 sm:py-0"
+            className="flex items-center group gap-2 uppercase text-xs font-bold text-primary-300 sm:border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900 justify-center sm:justify-normal py-5 sm:py-0"
             href={`/account/reservations/edit/${id}`}
           >
             <PencilSquareIcon className="size-5 text-primary-600 group-hover:text-primary-800" />

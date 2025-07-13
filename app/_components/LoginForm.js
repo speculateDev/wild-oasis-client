@@ -46,7 +46,7 @@ function LoginForm() {
   return (
     <form
       action={handleSignIn}
-      className="bg-primary-900 py-4 sm:py-6 px-6 sm:px-10 text-lg flex gap-6 flex-col min-w-[450px]"
+      className="bg-primary-900 py-4 sm:py-6 px-6 sm:px-10 text-lg flex gap-6 flex-col lg:min-w-[450px]"
     >
       {error && (
         <div className="text-red-500 text-center mb-4 font-bold tracking-wider">
